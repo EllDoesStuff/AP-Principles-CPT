@@ -45,13 +45,13 @@ def fights():
             if turn % 2 == 1 and turn != 0:
                 Grumfight = input("type Attack to attack with Goblin fist, and Magic to throw a fireball!")
                 if Grumfight == "Attack" or "attack":
-                    if npc_hp - Atk <= 0:
+                    if npc_hp - Atk < 0:
                         npc_hp = 0
                     else:    
                         npc_hp = npc_hp - Atk
                     
                 elif Grumfight == "Magic" or "magic":
-                    if npc_hp - Mag <= 0:
+                    if npc_hp - Mag < 0:
                         npc_hp = 0
                     else:    
                         npc_hp = npc_hp - Mag
@@ -65,43 +65,50 @@ def fights():
                     time.sleep(2)
                     sys.exit(0)
             Hp -= strength - math.ceil(Def * 1/3)        
-            print(f"You took {strength - math.ceil(Def * 0.25)} damage. You now have {Hp} HP!")    
+            print(f"You took {strength - math.ceil(Def * 1/3)} damage. You now have {Hp} HP!")
+            print("|-----------------------------------------------------------------------|")                 
             if npc_hp == 0:
                 turn = 0
                 Hp = 10
 
 
 def BOSS():
-    boss_hp = 40
-    boss_strength = 5
-    boss_attacks = ["Ground Pound", "Scratch Barrage", "Magic beam"]
-    Hp = 10
-    print(f"Flim-bim appears! It's the boss and it can hit you with {random.choice(boss_attacks)}. It has {boss_hp} hp.")
-    while boss_hp > 0:
-        turn = 1
-        if turn % 2 == 1 and turn != 0:
-            grumboss = input("type Attack to attack with Goblin fist, and Magic to throw a fireball!")  
-            if grumboss == "Attack" or "attack":
-                boss_hp = boss_hp - Atk
-                print(f"Goblin fist! Flim-Bim now has {boss_hp} HP!")
-                time.sleep(0.5)
-                turn = turn + 1
-            elif grumboss == "Magic" or "magic":    
-                boss_hp = boss_hp - Mag
-                print(f"Fireball! Flim-Bim now has {boss_hp} HP!")
-                time.sleep(0.5)
-                turn = turn + 1
-            if turn % 2 == 0 and boss_hp != 0:              
-                Hp -= (boss_strength - math.ceil(Def * 1/3))        
-                print(f"You took {boss_strength - math.ceil(Def * 0.25)} damage. You now have {Hp} HP!")
+        boss_hp = 40
+        boss_strength = 4
+        boss_attacks = ["Ground Pound", "Scratch Barrage", "Magic beam"]
+        Hp = 10
+        print(f"Flim-bim appears! It's the boss and it can hit you with {random.choice(boss_attacks)}. It has {boss_hp} hp.")
+        while boss_hp > 0:
+            turn = 1
+            if turn % 2 == 1 and turn != 0:
+                Grumfight = input("type Attack to attack with Goblin fist, and Magic to throw a fireball!")
+            if Grumfight == "Attack" or "attack":
+                if boss_hp - Atk < 0:
+                    boss_hp = 0
+                else:    
+                    boss_hp = boss_hp - Atk
+                    print(f"Goblin Fist! Enemy now has {boss_hp} HP!")
+                    time.sleep(0.5)
+                    turn = turn + 1                    
+            elif Grumfight == "Magic" or "magic":
+                if boss_hp - Mag < 0:
+                    boss_hp = 0
+                else:    
+                    boss_hp = boss_hp - Mag
+                    print(f"Fireball! Enemy now has {boss_hp} HP!")
+                    time.sleep(0.5)
+                    turn = turn + 1
+        if turn % 2 == 0 and turn != 0 and boss_hp != 0:              
+            Hp -= boss_strength - math.ceil(Def * 1/3)
             if Hp - (boss_strength - math.ceil(Def * 1/3)) < 0:
                 Hp = 0
                 print("You failed! Flim-bim keeps your treasure.")
                 time.sleep(2)
-                sys.exit(0)
-        if boss_hp >= 0:
-            sys.exit(0)
-            print("You have defeated Flimbim, and got all of your loot back! CONGRATS!")             
+                sys.exit(0)                    
+            print(f"You took {boss_strength - math.ceil(Def * 1/3)} damage. You now have {Hp} HP!")   
+            print("|----------------------------------------------------------------------------|")
+            turn += 1
+        print("You win! Grumblin gets his treasure back, and Flim-bim is defeated!")         
             
 
 
