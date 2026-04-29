@@ -1,93 +1,136 @@
 import math
 import time
 import random
+import sys
 
 def start():
-    now = input("Grumblin is a little goblin boy.\nHe loves attacking low level adventurers and stealing their loot to add to his ever-growing stash.\n But today, Flim-bim stole his stuff!\nNow, you have to help Grumblin get his treasure back! (press c to continue)")
+    now = input("Grumblin is a little goblin boy.\nHe loves attacking low level adventurers and stealing their loot to add to his ever-growing stash.\nBut today, Flim-bim stole his stuff!\nNow, you have to help Grumblin get his treasure back! (press c, then enter to continue)")
     if now == "c" or "C":
-        print("Grumblin has 10 stat points and 10 hp to start. Attack is for attacking enemies with hands, \nDefense makes sure you don't die, \nMagic makes you attck with mind.")
+        print("Grumblin has 10 stat points (spend these on your stats) after drinking a magic potion, and 10 hp to start. \nAttack is for attacking enemies with your hands, \nDefense makes sure you don't die, \nMagic makes you attack with your mind.\nMake sure your values add up to ten!")
 
-
-Atk = int(input("Input a number for Attack:"))
-Def = int(input("Input a number for Defense:"))
-Mag = int(input("Input a number for Magic:"))
-
-if Atk + Def + Mag >= 10 or Atk + Def + Mag <= 10:
-    Atk = int(input("Input a number for Attack:"))
-    Def = int(input("Input a number for Defense:"))
-    Mag = int(input("Input a number for Magic:"))
-
-print(f"So Grumblin has {Atk} attack, {Def} defense, and {Mag} magic. Now, he can fight for his treasure! There's five rounds until Flim-bim, good luck!")
-Hp = 10
+        
 
 
 
-
-
-turn = 1
 
 
 
    
 def fights():
-while sumt<5: #NEED TO FIGURE OUT HOW TO MAKE 5 NPC FiGHTS APPEAR BEFORE FLIMBIM
-    attacks = ["Scratch","Bite","Rock Throw"]
-    strength = []
-    durability = []
-    turn = []
-    npc_hp = []
-    creature = ["Wolf", "Mutant spider", "Cyclops","Leviathan", "Yeti", "Gorgon", "Ghoul", "Minotaur"]
-    classes = ["Attacker","Defender","Speedster","All-Rounder", "Technical"]
-    cre = (random.choice(creature))
-    cla = (random.choice(classes))
-    att = (random.choice(attacks))
-    if classes == "Attacker":
-        npc_hp = [10]
-        strength = [3]
-    if classes == "Defender":
-        npc_hp = [15]
-        strength = [2]
-    if classes == "Speedster":
-        npc_hp = [9]
-        strength = [1]
-    if classes == "All-Rounder":
-        npc_hp = [13]
-        strength = [2]
-    if classes == "Technical":
-        npc_hp = [11]
-        strength = [2]
-    print(f"A {cre} approaches, it's a {cla} type. It may hit you with {attacks}. It has {npc_hp} hp.")
-    if turn % 2 == 0:
-        Grumfight = input("type Attack to attack with Goblin fist, and Magic to throw a fireball!")
-        if Grumfight == "Attack":
-            npc_hp - Atk
-            print(f"Goblin fist! Enemy now has {npc_hp}!")
-            time.sleep(0.5)
-            turn = turn + 1
-        elif Grumfight == "Magic":
-            npc_hp - Mag
-            print(f"Fireball! Enemy now has {npc_hp}!")
-            time.sleep(0.5)
-            turn = turn + 1
-    elif turn % 2 == 1:
-        
-        
-    card1 = Atk * 2
-    card2 = Atk + turn
-    card3 = Mag * 2
-    card4 = Mag + turn
-    card5 = Def * 2
-    card6 = Def + turn
-    card7 = Hp * 2
-    card8 = Hp + turn
-    Cards = [card1, card2, card3, card4, card5, card6, card7, card8]
-    random.choice(Cards)
+        Hp = 10
+        attacks = ["Scratch","Bite","Rock Throw"]
+        creature = ["Wolf", "Mutant spider", "Cyclops","Leviathan", "Yeti", "Gorgon", "Ghoul", "Minotaur"]
+        classes = ["Attacker","Defender","Speedster","All-Rounder", "Technical"]
+        cre = (random.choice(creature))
+        cla = (random.choice(classes))
+        att = (random.choice(attacks))
+        if cla == "Attacker":
+            npc_hp = 10
+            strength = 3
+        if cla == "Defender":
+            npc_hp = 15
+            strength = 2
+        if cla == "Speedster":
+            npc_hp = 9
+            strength = 1
+        if cla == "All-Rounder":
+            npc_hp = 13
+            strength = 2
+        if cla == "Technical":
+            npc_hp = 11
+            strength = 2
+        while npc_hp > 0:
+            turn = 1
+            print(f"A {cre} approaches, it's a {cla} type. It may hit you with {att}. It has {npc_hp} hp.")
+            if turn % 2 == 1 and turn != 0:
+                Grumfight = input("type Attack to attack with Goblin fist, and Magic to throw a fireball!")
+                if Grumfight == "Attack" or "attack":
+                    if npc_hp - Atk <= 0:
+                        npc_hp = 0
+                    else:    
+                        npc_hp = npc_hp - Atk
+                    
+                elif Grumfight == "Magic" or "magic":
+                    if npc_hp - Mag <= 0:
+                        npc_hp = 0
+                    else:    
+                        npc_hp = npc_hp - Mag
+                    print(f"Fireball! Enemy now has {npc_hp} HP!")
+                    time.sleep(0.5)
+                    turn = turn + 1
+            if turn % 2 == 0 and turn != 0 and npc_hp != 0:              
+                if Hp - (strength - math.ceil(Def * 1/3)) < 0:
+                    Hp = 0
+                    print("You failed! Flim-bim keeps your treasure.")
+                    time.sleep(2)
+                    sys.exit(0)
+            Hp -= strength - math.ceil(Def * 1/3)        
+            print(f"You took {strength - math.ceil(Def * 0.25)} damage. You now have {Hp} HP!")    
+            if npc_hp == 0:
+                turn = 0
+                Hp = 10
 
-#Flimbim activation
-boss_hp = 50
-boss_strength = 5
-boss_attacks = ["Ground Pound", "Scratch Barrage", "Magic beam"]
-print(f"Flim-bim appears! It's the boss and it can hit you with {boss_attacks}. It has {boss_hp} hp.")
 
+def BOSS():
+    boss_hp = 40
+    boss_strength = 5
+    boss_attacks = ["Ground Pound", "Scratch Barrage", "Magic beam"]
+    Hp = 10
+    print(f"Flim-bim appears! It's the boss and it can hit you with {random.choice(boss_attacks)}. It has {boss_hp} hp.")
+    while boss_hp > 0:
+        turn = 1
+        if turn % 2 == 1 and turn != 0:
+            grumboss = input("type Attack to attack with Goblin fist, and Magic to throw a fireball!")  
+            if grumboss == "Attack" or "attack":
+                boss_hp = boss_hp - Atk
+                print(f"Goblin fist! Flim-Bim now has {boss_hp} HP!")
+                time.sleep(0.5)
+                turn = turn + 1
+            elif grumboss == "Magic" or "magic":    
+                boss_hp = boss_hp - Mag
+                print(f"Fireball! Flim-Bim now has {boss_hp} HP!")
+                time.sleep(0.5)
+                turn = turn + 1
+            if turn % 2 == 0 and boss_hp != 0:              
+                Hp -= (boss_strength - math.ceil(Def * 1/3))        
+                print(f"You took {boss_strength - math.ceil(Def * 0.25)} damage. You now have {Hp} HP!")
+            if Hp - (boss_strength - math.ceil(Def * 1/3)) < 0:
+                Hp = 0
+                print("You failed! Flim-bim keeps your treasure.")
+                time.sleep(2)
+                sys.exit(0)
+        if boss_hp >= 0:
+            sys.exit(0)
+            print("You have defeated Flimbim, and got all of your loot back! CONGRATS!")             
+            
+
+
+start()
+Atk = int(input("Input a number for Attack:"))
+Def = int(input("Input a number for Defense:"))
+Mag = int(input("Input a number for Magic:"))
+
+if Atk + Def + Mag > 10 or Atk + Def + Mag < 10:
+    print("Doesn't add to ten!")
+    Atk = int(input("Input a number for Attack:"))
+    Def = int(input("Input a number for Defense:"))
+    Mag = int(input("Input a number for Magic:"))
+
+print(f"So Grumblin has {Atk} attack, {Def} defense, and {Mag} magic. Now, he can fight for his treasure! There's five rounds until Flim-bim, good luck!")
+fight = 1
+while fight < 6:
+    fights()
+    fight = fight + 1
+def boon():
+    boon_num = int(input("Before you fight Flim-Bim, a G O D grants you a B O O N.\n You can become S T R O N G E R and get twice your damage (input 1),\nYou can become B U L K I E R and gain 2.5 times your defence (input 2),\n or you can become A S C E N D E D and gain twice your magic (input 3)." ))
+    global Atk, Def, Mag
+    if boon_num == 1:
+        Atk *= 2
+    elif boon_num == 2:
+        Def *= 2.5
+    elif boon_num ==3:
+        Mag *= 2    
+boon()
+BOSS()    
 
 
